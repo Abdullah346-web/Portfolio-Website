@@ -1,0 +1,25 @@
+/* Global styles - App specific CSS goes here if needed */
+/* Most styling is handled by Tailwind CSS utility classes */
+
+/* Optional: Add smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optional: Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}

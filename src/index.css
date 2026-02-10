@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme Colors */
+@layer base {
+  :root {
+    --main-color: #24f0f3;
+    --main-color-rgb: 36 240 243;
+    --main-glow: 0 0 8px var(--main-color), 0 0 16px var(--main-color);
+  }
+
+  h1, h2, h3 {
+    color: var(--main-color);
+  }
+}
+
+@layer components {
+  .text-glow {
+    text-shadow: var(--main-glow);
+  }
+
+  .btn-main {
+    background: var(--main-color);
+    color: #0b1319;
+    font-weight: 600;
+    transition: all 150ms ease;
+  }
+
+  .btn-main:hover {
+    filter: brightness(1.1);
+    box-shadow: var(--main-glow);
+  }
+
+  .btn-main:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Remove default Vite styling conflicts */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
