@@ -93,7 +93,7 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center bg-black pt-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -103,7 +103,7 @@ const HeroSection = () => {
         {/* Main Heading */}
                   <motion.h1
                     variants={itemVariants}
-                    className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
                   >
                     <span className="block text-white">Hi, I'm</span>
                     <span className="block text-main relative inline-block mt-4">
@@ -115,9 +115,9 @@ const HeroSection = () => {
                   {/* Typewriter Effect */}
           <motion.div
             variants={itemVariants}
-            className="h-24 md:h-20 flex items-center justify-center"
+            className="h-20 md:h-20 flex items-center justify-center"
           >
-            <p className="text-xl md:text-2xl text-main min-h-12 flex items-center">
+            <p className="text-lg sm:text-xl md:text-2xl text-main min-h-12 flex items-center">
               {displayedText}
               <span className="inline-block w-1 h-8 md:h-10 bg-[var(--main-color)] ml-2 animate-pulse" />
             </p>
@@ -134,7 +134,7 @@ const HeroSection = () => {
           {/* CTA Buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex gap-4 justify-center flex-wrap"
+            className="flex gap-3 sm:gap-4 justify-center flex-wrap"
           >
             <motion.button
               onClick={() => scrollToSection('projects')}

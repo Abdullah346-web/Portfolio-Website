@@ -32,10 +32,10 @@ const AboutSection = () => {
   ];
 
   return (
-    <AnimatedSection id="about" className="min-h-screen bg-black py-20">
+    <AnimatedSection id="about" className="min-h-screen bg-black py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ const AboutSection = () => {
         </div>
 
         {/* About Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -97,7 +97,7 @@ const AboutSection = () => {
             transition={{ duration: 0.6 }}
             className="relative flex justify-center"
           >
-            <div className="relative w-48 h-64 sm:w-56 sm:h-72 md:w-64 md:h-80 lg:w-72 lg:h-96">
+            <div className="relative w-40 h-56 sm:w-48 sm:h-64 md:w-56 md:h-72 lg:w-72 lg:h-96">
               {/* Animated glow background */}
               <motion.div
                 animate={{
