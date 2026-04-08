@@ -4,6 +4,7 @@ import { ExternalLink, Github } from 'lucide-react';
 import barberImg from '../assets/New folder/1.jpeg';
 import restaurantImg from '../assets/New folder/restaurant.jpeg';
 import tailorImg from '../assets/New folder/tailor.jpeg';
+import megaProjectImg from '../assets/New folder/Untitled.png';
 
 const ProjectsSection = () => {
   const projects = [
@@ -33,6 +34,16 @@ const ProjectsSection = () => {
       tags: ['React', 'Node.js', 'MongoDB', 'Express', 'Tailwind', 'JWT', 'REST API'],
       link: 'https://tailorwebsite-frontend.vercel.app/',
       github: 'https://github.com/Abdullah346-web',
+    },
+    {
+      id: 4,
+      title: 'GPA Saver - Mega Project',
+      description: 'Comprehensive GPA tracking platform with polished dashboard experience, subject-wise planning, and performance insights to help students monitor and improve academic progress effectively.',
+      image: megaProjectImg,
+      tags: ['React', 'Vite', 'Dashboard UI', 'Performance Tracking', 'Responsive'],
+      link: 'https://gpa-saver-frontend.vercel.app',
+      github: 'https://github.com/Abdullah346-web',
+      isMega: true,
     },
   ];
 
@@ -75,7 +86,11 @@ const ProjectsSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -10 }}
-              className="group bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-main transition-all duration-300 flex flex-col"
+              className={`group rounded-xl overflow-hidden border transition-all duration-300 flex flex-col ${
+                project.isMega
+                  ? 'bg-gradient-to-b from-cyan-950/30 to-gray-900 border-main shadow-[0_0_30px_rgba(36,240,243,0.15)] md:col-span-2 lg:col-span-2'
+                  : 'bg-gray-900 border-gray-800 hover:border-main'
+              }`}
             >
               {/* Project Image */}
               <div className="relative overflow-hidden h-48 bg-gray-700">
@@ -85,6 +100,11 @@ const ProjectsSection = () => {
                   className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60" />
+                {project.isMega && (
+                  <span className="absolute top-3 right-3 text-[11px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-main text-black shadow-glow">
+                    Mega Project
+                  </span>
+                )}
               </div>
 
               {/* Project Content */}
