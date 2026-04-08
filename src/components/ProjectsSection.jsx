@@ -38,9 +38,9 @@ const ProjectsSection = () => {
     {
       id: 4,
       title: 'GPA Saver - Mega Project',
-      description: 'Comprehensive GPA tracking platform with polished dashboard experience, subject-wise planning, and performance insights to help students monitor and improve academic progress effectively.',
+      description: '👉 "A full-stack MERN application designed to streamline note sharing and collaboration within a classroom."',
       image: megaProjectImg,
-      tags: ['React', 'Vite', 'Dashboard UI', 'Performance Tracking', 'Responsive'],
+      tags: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'JWT', 'bcrypt'],
       link: 'https://gpa-saver-frontend.vercel.app',
       github: 'https://github.com/Abdullah346-web',
       isMega: true,
