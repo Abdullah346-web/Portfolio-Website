@@ -7,7 +7,7 @@ const EducationSection = () => {
                             { id: 1, duration: '2012 – 2022', degree: 'Matriculation (Science)', institute: 'Fazaia Inter College (FIC)', percentage: '81.7%', description: 'Secondary education with focus on Science subjects', isOngoing: false },
                             { id: 2, duration: '2022 – 2024', degree: 'Intermediate', institute: 'Fazaia Inter College (FIC)', percentage: '75%', description: 'Higher secondary education', isOngoing: false },
                             { id: 3, duration: 'June 2024', degree: 'Diploma in Software Engineering (1st Semester)', institute: 'Aptech', percentage: '78%', description: 'Professional software engineering diploma', isOngoing: false },
-                            { id: 4, duration: 'November 2024 – March 2025', degree: 'Full Stack MERN Development', institute: 'SMIT (Saylani Mass IT Training)', description: 'Comprehensive MERN stack development bootcamp', isOngoing: true },
+                            { id: 4, duration: 'November 2024 – March 2025', degree: 'Full Stack MERN Development', institute: 'SMIT (Saylani Mass IT Training)', description: 'Comprehensive MERN stack development bootcamp', isOngoing: false },
                             { id: 5, duration: '2025 – Present', degree: "Bachelor's in Cyber Security", institute: 'Dawood University', description: 'Specialized degree in cybersecurity', isOngoing: true },
                           ];
 
