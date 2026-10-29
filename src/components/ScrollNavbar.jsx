@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+
+const NAV_LINKS = [
+  { name: 'Home', id: 'home' },
+  { name: 'Education', id: 'education' },
+  { name: 'About', id: 'about' },
+  { name: 'Projects', id: 'projects' },
+  { name: 'Contact', id: 'contact' },
+];
 
 const ScrollNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [scrollProgress, setScrollProgress] = useState(0);
-
-  const navLinks = [
-    { name: 'Home', id: 'home' },
-    { name: 'Education', id: 'education' },
-    { name: 'About', id: 'about' },
-    { name: 'Projects', id: 'projects' },
-    { name: 'Contact', id: 'contact' },
-  ];
+  const { mode, setMode } = useTheme();
 
   // Handle scroll to update active section and progress bar
   useEffect(() => {
@@ -24,7 +26,7 @@ const ScrollNavbar = () => {
       setScrollProgress(progress);
 
       // Determine active section
-      const sections = navLinks.map(link => link.id);
+      const sections = NAV_LINKS.map(link => link.id);
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -58,16 +60,16 @@ const ScrollNavbar = () => {
   return (
     <>
       {/* Scroll Progress Bar */}
-      <motion.div
+      <Motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-[var(--main-color)] origin-left z-50 shadow-glow"
         style={{ scaleX: scrollProgress / 100 }}
       />
 
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-md border-b border-gray-800 mt-1">
+      <nav aria-label="Primary navigation" className="fixed top-0 left-0 right-0 z-40 mt-1 border-b border-[var(--border-color)] bg-[var(--nav-bg)]/95 backdrop-blur-md transition-colors duration-500">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 py-2">
             {/* Logo */}
-            <motion.button
+            <Motion.button
               onClick={() => scrollToSection('home')}
               className="flex items-center space-x-2"
               whileHover={{ scale: 1.05 }}
@@ -79,11 +81,11 @@ const ScrollNavbar = () => {
               <span className="font-bold text-xl hidden sm:inline text-main">
                 Portfolio
               </span>
-            </motion.button>
+            </Motion.button>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-6">
-              {navLinks.map((link) => (
+            <div className="hidden items-center space-x-6 md:flex">
+              {NAV_LINKS.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
@@ -98,23 +100,53 @@ const ScrollNavbar = () => {
               ))}
             </div>
 
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-gray-300 hover:text-white"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="flex items-center gap-2">
+              <div
+                className="flex items-center rounded-full border border-[var(--border-color)] bg-[var(--toggle-bg)] p-1"
+                role="group"
+                aria-label="Portfolio mode"
+              >
+                {[
+                  { id: 'developer', label: 'Developer' },
+                  { id: 'cybersecurity', label: 'Cybersecurity' },
+                ].map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    title={`Switch to ${option.label} mode`}
+                    aria-pressed={mode === option.id}
+                    onClick={() => setMode(option.id)}
+                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all duration-300 sm:px-4 ${
+                      mode === option.id
+                        ? 'bg-[var(--main-color)] text-[var(--accent-contrast)] shadow-[0_0_16px_var(--accent-soft)]'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={isOpen}
+                className="p-2 text-gray-300 hover:text-white md:hidden"
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu */}
           {isOpen && (
-            <motion.div
+            <Motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="md:hidden pb-4 border-t border-gray-800"
+              className="border-t border-[var(--border-color)] pb-4 md:hidden"
             >
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
@@ -127,7 +159,7 @@ const ScrollNavbar = () => {
                   {link.name}
                 </button>
               ))}
-            </motion.div>
+            </Motion.div>
           )}
         </div>
       </nav>

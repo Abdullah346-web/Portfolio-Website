@@ -1,6 +1,6 @@
 import AnimatedSection from './AnimatedSection';
-import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Twitter, Send } from 'lucide-react';
+import { motion as Motion } from 'framer-motion';
+import { Mail, Github, Linkedin, Send } from 'lucide-react';
 import { useState } from 'react';
 
 const ContactSection = () => {
@@ -10,6 +10,7 @@ const ContactSection = () => {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,115 +19,115 @@ const ContactSection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    console.log('Form submitted:', formData);
-    alert('Thank you! Your message has been sent.');
-    
-    setFormData({ name: '', email: '', message: '' });
+    const subject = encodeURIComponent(`Portfolio message from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`,
+    );
+    window.location.href = `mailto:abdullahmubeen200@gmail.com?subject=${subject}&body=${body}`;
+    setSubmitMessage('Your email app should open with this message ready to send.');
     setIsSubmitting(false);
   };
 
   const socialLinks = [
     { icon: Github, href: 'https://github.com/Abdullah346-web', label: 'GitHub', color: 'hover:text-main' },
     { icon: Linkedin, href: 'https://www.linkedin.com/in/abdullah-mubeen-7041a9331', label: 'LinkedIn', color: 'hover:text-main' },
-    { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-main' },
     { icon: Mail, href: 'mailto:abdullahmubeen200@gmail.com', label: 'Email', color: 'hover:text-main' },
   ];
 
   return (
-    <AnimatedSection id="contact" className="min-h-screen bg-black py-16 md:py-20">
+    <AnimatedSection id="contact" className="theme-section min-h-screen py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
-          <motion.h2
+          <Motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-main mb-4"
           >
             Get In Touch
-          </motion.h2>
-          <motion.div
+          </Motion.h2>
+          <Motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             className="w-20 h-1 bg-[var(--main-color)] mx-auto mb-4 shadow-glow"
           />
-          <motion.p
+          <Motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="text-gray-400 text-lg max-w-2xl mx-auto"
           >
             Have a question or want to work together? Feel free to reach out!
-          </motion.p>
+          </Motion.p>
         </div>
 
         {/* Contact Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+          <Motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gray-900 rounded-2xl p-6 md:p-8 border border-gray-800"
+            className="theme-surface rounded-2xl border p-6 md:p-8"
           >
             <h3 className="text-2xl font-bold text-main mb-6">Send me a message</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="contact-name" className="mb-2 block text-sm font-medium text-gray-300">
                   Your Name
                 </label>
                 <input
                   type="text"
+                  id="contact-name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-main focus:ring-2 focus:ring-[color:rgba(36,240,243,0.35)] transition-all"
+                  className="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-500 transition-all focus:border-main focus:outline-none focus:ring-2 focus:ring-[color:rgba(36,240,243,0.35)]"
                 />
               </div>
 
               {/* Email Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="contact-email" className="mb-2 block text-sm font-medium text-gray-300">
                   Your Email
                 </label>
                 <input
                   type="email"
+                  id="contact-email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
                   placeholder="john@example.com"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-main focus:ring-2 focus:ring-[color:rgba(36,240,243,0.35)] transition-all"
+                  className="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-500 transition-all focus:border-main focus:outline-none focus:ring-2 focus:ring-[color:rgba(36,240,243,0.35)]"
                 />
               </div>
 
               {/* Message Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="contact-message" className="mb-2 block text-sm font-medium text-gray-300">
                   Your Message
                 </label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
                   placeholder="Tell me about your project..."
                   rows="5"
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-main focus:ring-2 focus:ring-[color:rgba(36,240,243,0.35)] transition-all resize-none"
+                  className="w-full resize-none rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-white placeholder-slate-500 transition-all focus:border-main focus:outline-none focus:ring-2 focus:ring-[color:rgba(36,240,243,0.35)]"
                 />
               </div>
 
               {/* Submit Button */}
-              <motion.button
+              <Motion.button
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full btn-main disabled:opacity-60 disabled:cursor-not-allowed text-black font-medium py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
@@ -144,17 +145,22 @@ const ContactSection = () => {
                     Send Message
                   </>
                 )}
-              </motion.button>
+              </Motion.button>
+              {submitMessage && (
+                <p className="text-sm text-main" role="status">
+                  {submitMessage}
+                </p>
+              )}
             </form>
-          </motion.div>
+          </Motion.div>
 
           {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+          <Motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-8"
+            className="min-w-0 space-y-8"
           >
             {/* Info Text */}
             <div>
@@ -166,16 +172,16 @@ const ContactSection = () => {
             </div>
 
             {/* Contact Info Card */}
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+            <div className="min-w-0 rounded-2xl border border-gray-700 bg-gray-800 p-6">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-12 h-12 bg-[var(--main-color)] rounded-lg flex items-center justify-center flex-shrink-0 shadow-glow">
                   <Mail className="text-black" size={24} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h4 className="text-white font-medium mb-1">Email</h4>
                   <a
                     href="mailto:abdullahmubeen200@gmail.com"
-                    className="text-gray-400 hover:text-main transition-colors"
+                    className="break-all text-gray-400 transition-colors hover:text-main"
                   >
                     abdullahmubeen200@gmail.com
                   </a>
@@ -187,7 +193,7 @@ const ContactSection = () => {
                 <div className="w-12 h-12 bg-[rgba(36,240,243,0.12)] border border-[rgba(36,240,243,0.35)] rounded-lg flex items-center justify-center flex-shrink-0">
                   <span className="text-2xl">📍</span>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h4 className="text-white font-medium mb-1">Location</h4>
                   <p className="text-gray-400">Karachi, Pakistan</p>
                 </div>
@@ -197,19 +203,20 @@ const ContactSection = () => {
             {/* Social Links */}
             <div>
               <h4 className="text-white font-medium mb-4">Follow Me</h4>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 {socialLinks.map((social) => (
-                  <motion.a
+                  <Motion.a
                     key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={social.label}
                     className={`w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400 ${social.color} border border-gray-700 hover:border-main transition-all`}
                     whileHover={{ y: -5, scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <social.icon size={20} />
-                  </motion.a>
+                  </Motion.a>
                 ))}
               </div>
             </div>
@@ -220,7 +227,7 @@ const ContactSection = () => {
                 ⚡ I usually respond within 24 hours
               </p>
             </div>
-          </motion.div>
+          </Motion.div>
         </div>
       </div>
     </AnimatedSection>

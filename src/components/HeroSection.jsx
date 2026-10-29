@@ -1,63 +1,111 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { motion as Motion } from 'framer-motion';
+import { ArrowRight, Code2, Github, Linkedin, Mail } from 'lucide-react';
+import { createElement, useState, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext';
+import CybersecurityHeroVisual from './CybersecurityHeroVisual';
+import DeveloperHeroVisual from './DeveloperHeroVisual';
+import CybersecurityExperience from './CybersecurityExperience';
 
-// Custom Typewriter Hook
-const useTypewriter = (lines, typingSpeed = 100, deletingSpeed = 50, delayBetweenLines = 1000) => {
+const DEVELOPER_LINES = [
+  'MERN Stack Developer',
+  'Full Stack Web Developer',
+  'Building Modern Web Experiences',
+  'Turning Ideas Into Web Applications',
+  'React & Node.js Developer',
+];
+
+const CYBERSECURITY_LINES = [
+  'Cybersecurity Enthusiast',
+  'Exploring Network Security',
+  'Learning Ethical Hacking',
+  'Python Security Tool Developer',
+  'Future Security Professional',
+];
+
+const usePrefersReducedMotion = () => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return prefersReducedMotion;
+};
+
+const useTypewriter = (lines, prefersReducedMotion, typingSpeed = 90, deletingSpeed = 45, delayBetweenLines = 1400) => {
   const [displayedText, setDisplayedText] = useState('');
   const [lineIndex, setLineIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return undefined;
+    }
+
     const currentLine = lines[lineIndex];
-    let timeout;
+    let timeoutId;
 
     if (!isDeleting) {
-      // Typing phase
       if (charIndex < currentLine.length) {
-        timeout = setTimeout(() => {
+        timeoutId = setTimeout(() => {
           setDisplayedText(currentLine.substring(0, charIndex + 1));
           setCharIndex(charIndex + 1);
         }, typingSpeed);
       } else {
-        // Finished typing, wait then start deleting
-        timeout = setTimeout(() => {
+        timeoutId = setTimeout(() => {
           setIsDeleting(true);
         }, delayBetweenLines);
       }
     } else {
-      // Deleting phase
       if (charIndex > 0) {
-        timeout = setTimeout(() => {
+        timeoutId = setTimeout(() => {
           setDisplayedText(currentLine.substring(0, charIndex - 1));
           setCharIndex(charIndex - 1);
         }, deletingSpeed);
       } else {
-        // Finished deleting, move to next line
-        setIsDeleting(false);
-        setLineIndex((lineIndex + 1) % lines.length);
+        timeoutId = setTimeout(() => {
+          setIsDeleting(false);
+          setLineIndex((lineIndex + 1) % lines.length);
+        }, 0);
       }
     }
 
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, lineIndex, lines, typingSpeed, deletingSpeed, delayBetweenLines]);
+    return () => clearTimeout(timeoutId);
+  }, [charIndex, delayBetweenLines, deletingSpeed, isDeleting, lineIndex, lines, prefersReducedMotion, typingSpeed]);
 
-  return displayedText;
+  return prefersReducedMotion ? lines[0] : displayedText;
+};
+
+const TypewriterText = ({ lines, prefersReducedMotion, isCybersecurity }) => {
+  const displayedText = useTypewriter(lines, prefersReducedMotion);
+
+  return (
+    <p
+      className={`flex items-center text-xl font-semibold text-main sm:text-2xl md:text-3xl ${
+        isCybersecurity ? 'font-mono tracking-tight' : ''
+      }`}
+    >
+      <span>{displayedText}</span>
+      <span
+        aria-hidden="true"
+        className="ml-2 inline-block h-7 w-[3px] animate-pulse bg-[var(--main-color)] shadow-[0_0_12px_var(--main-color)] sm:h-8 md:h-10"
+      />
+    </p>
+  );
 };
 
 const HeroSection = () => {
-  // Typewriter lines
-  const typewriterLines = [
-    "I'm a Junior MERN Developer",
-    "Build dynamic interfaces using React",
-    "I love solving complex problems",
-    "I turn ideas into code"
-  ];
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const { mode, isCybersecurity } = useTheme();
+  const typewriterLines = isCybersecurity ? CYBERSECURITY_LINES : DEVELOPER_LINES;
 
-  // Use typewriter hook
-  const displayedText = useTypewriter(typewriterLines);
-  // Scroll to section helper
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -70,7 +118,6 @@ const HeroSection = () => {
     }
   };
 
-  // Text animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -91,72 +138,133 @@ const HeroSection = () => {
     },
   };
 
+  const socialLinks = [
+    { icon: Github, href: 'https://github.com/Abdullah346-web', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/abdullah-mubeen-7041a9331', label: 'LinkedIn' },
+    { icon: Mail, href: 'mailto:abdullahmubeen200@gmail.com', label: 'Email' },
+  ];
+
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center bg-black pt-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-        <motion.div
+    <>
+    <section
+      id="home"
+      className="hero-section relative isolate min-h-screen overflow-hidden pt-20 transition-colors duration-500"
+    >
+      <div className="hero-glow pointer-events-none absolute inset-0 -z-10" />
+      <div className="hero-grid pointer-events-none absolute inset-0 -z-10" />
+
+      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+        <Motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-center space-y-8"
+          className="grid w-full items-center gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16"
         >
-        {/* Main Heading */}
-                  <motion.h1
-                    variants={itemVariants}
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
-                  >
-                    <span className="block text-white">Hi, I'm</span>
-                    <span className="block text-main relative inline-block mt-4">
-                      Abdullah Mubeen
-                      <span className="absolute -bottom-4 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-main to-transparent blur-md"></span>
-                    </span>
-                  </motion.h1>
-
-                  {/* Typewriter Effect */}
-          <motion.div
-            variants={itemVariants}
-            className="h-20 md:h-20 flex items-center justify-center"
-          >
-            <p className="text-lg sm:text-xl md:text-2xl text-main min-h-12 flex items-center">
-              {displayedText}
-              <span className="inline-block w-1 h-8 md:h-10 bg-[var(--main-color)] ml-2 animate-pulse" />
-            </p>
-          </motion.div>
-
-          {/* Description */}
-          <motion.p
-            variants={itemVariants}
-            className="text-lg text-gray-500 max-w-2xl mx-auto"
-          >
-            Building modern web applications that combine beautiful design with powerful functionality
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            variants={itemVariants}
-            className="flex gap-3 sm:gap-4 justify-center flex-wrap"
-          >
-            <motion.button
-              onClick={() => scrollToSection('projects')}
-              className="btn-main px-8 py-3 rounded-lg font-medium flex items-center gap-2"
-              whileHover={{ scale: 1.05, boxShadow: '0 0 24px rgba(36, 240, 243, 0.35)' }}
-              whileTap={{ scale: 0.95 }}
+          <div className="text-center lg:text-left">
+            <Motion.div
+              variants={itemVariants}
+              className="hero-badge mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-main"
             >
-              View My Work <ArrowRight size={20} />
-            </motion.button>
-            <motion.button
-              onClick={() => scrollToSection('contact')}
-              className="px-8 py-3 rounded-lg font-medium border border-main text-main hover:bg-main hover:text-black flex items-center gap-2 transition-all"
-              whileHover={{ scale: 1.1, boxShadow: '0 0 24px rgba(36, 240, 243, 0.35)' }}
-              whileTap={{ scale: 0.95 }}
+              <span className="h-2 w-2 animate-pulse rounded-full bg-main shadow-[0_0_12px_#24F0F3]" />
+              Available for new opportunities
+            </Motion.div>
+
+            <Motion.h1
+              variants={itemVariants}
+              className="text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl"
             >
-              <Code2 size={20} />
-              Get in Touch
-            </motion.button>
-          </motion.div>
-        </motion.div>
+              Hi, I&apos;m
+              <span className="mt-3 block bg-gradient-to-r from-white via-[var(--accent-light)] to-main bg-clip-text text-transparent">
+                Abdullah Mubeen
+              </span>
+            </Motion.h1>
+
+            <Motion.div
+              variants={itemVariants}
+              className="mt-8 flex h-20 items-center justify-center lg:justify-start"
+              aria-live="polite"
+            >
+              <TypewriterText
+                key={mode}
+                lines={typewriterLines}
+                prefersReducedMotion={prefersReducedMotion}
+                isCybersecurity={isCybersecurity}
+              />
+            </Motion.div>
+
+            <Motion.p
+              variants={itemVariants}
+              className="mx-auto mt-5 max-w-xl text-base leading-8 text-slate-400 sm:text-lg lg:mx-0"
+            >
+              I build modern web applications that pair thoughtful user experiences with reliable,
+              secure engineering.
+            </Motion.p>
+
+            <Motion.div
+              variants={itemVariants}
+              className="mt-9 flex flex-wrap justify-center gap-3 sm:gap-4 lg:justify-start"
+            >
+              <Motion.button
+                onClick={() => scrollToSection('projects')}
+                className="btn-main flex items-center gap-2 rounded-lg px-7 py-3.5 font-semibold"
+                whileHover={{ scale: 1.03, boxShadow: '0 0 28px var(--accent-soft)' }}
+                whileTap={{ scale: 0.97 }}
+              >
+                View My Work <ArrowRight size={19} />
+              </Motion.button>
+              <Motion.button
+                onClick={() => scrollToSection('contact')}
+                className="flex items-center gap-2 rounded-lg border border-main/70 px-7 py-3.5 font-semibold text-main transition-all hover:bg-main hover:text-black"
+                whileHover={{ scale: 1.03, boxShadow: '0 0 28px var(--accent-soft)' }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Code2 size={19} />
+                Get in Touch
+              </Motion.button>
+            </Motion.div>
+
+            <Motion.div
+              variants={itemVariants}
+              className="mt-9 flex items-center justify-center gap-4 lg:justify-start"
+            >
+              <span className="text-xs uppercase tracking-[0.2em] text-slate-500">Find me on</span>
+              <span className="h-px w-8 bg-slate-700" />
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  aria-label={label}
+                  className="rounded-full border border-slate-800 p-2.5 text-slate-400 transition-colors hover:border-main hover:text-main"
+                >
+                  {createElement(Icon, { size: 17 })}
+                </a>
+              ))}
+            </Motion.div>
+          </div>
+
+          <Motion.div
+            variants={itemVariants}
+            className="relative mx-auto flex min-h-[430px] w-full max-w-md items-center lg:mx-0 lg:justify-self-end"
+          >
+            {isCybersecurity ? (
+              <CybersecurityHeroVisual
+                key="cybersecurity-visual"
+                prefersReducedMotion={prefersReducedMotion}
+              />
+            ) : (
+              <DeveloperHeroVisual
+                key="developer-visual"
+                prefersReducedMotion={prefersReducedMotion}
+              />
+            )}
+          </Motion.div>
+        </Motion.div>
       </div>
     </section>
+    {isCybersecurity && <CybersecurityExperience prefersReducedMotion={prefersReducedMotion} />}
+    </>
   );
 };
 

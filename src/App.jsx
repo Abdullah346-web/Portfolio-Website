@@ -6,25 +6,28 @@ import AboutSection from './components/AboutSection';
 import ProjectsSection from './components/ProjectsSection';
 import ContactSection from './components/ContactSection';
 import ScrollFooter from './components/ScrollFooter';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
-    <div className="bg-black">
-      {/* Sticky Navbar with Scroll Progress */}
-      <ScrollNavbar />
+    <ThemeProvider>
+      <div className="theme-shell min-h-screen bg-[var(--page-bg)] transition-colors duration-500">
+        {/* Sticky Navbar with Scroll Progress */}
+        <ScrollNavbar />
 
-      {/* All Sections in One Page */}
-      <main>
-        <HeroSection />
-        <EducationSection />
-        <AboutSection />
-        <ProjectsSection />
-        <ContactSection />
-      </main>
+        {/* All Sections in One Page */}
+        <main>
+          <HeroSection />
+          <EducationSection />
+          <AboutSection />
+          <ProjectsSection />
+          <ContactSection />
+        </main>
 
-      {/* Footer */}
-      <ScrollFooter />
-    </div>
+        {/* Footer */}
+        <ScrollFooter />
+      </div>
+    </ThemeProvider>
   );
 }
 
